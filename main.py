@@ -1,4 +1,4 @@
-from math import (cos, sin, tan, atan, pi)
+from math import (cos, sin, tan, atan, pi, sqrt)
 from math import degrees as deg, radians as rad
 
 d = float(input("Profundide da ferramenta (m): "))
@@ -7,20 +7,26 @@ w = float(input("Largura da ferramenta (m): "))
 # Primeiro passo: Tipo de ferramenta
 
 if d/w < 1:
-  print("----------------------------------------------")
-  print("Tipo de ferramenta: Blade (espessa => d/w < 1)")
-  print("----------------------------------------------")
   dc = d
+  print("----------------------------------------------")
+  print("d/w = {:.3f}".format(d/w))
+  print("Tipo de ferramenta: Blade (larga => d/w < 1)")
+  print("dc = d = {:.3f} m".format(dc))
+  print("----------------------------------------------")
 elif (d/w >= 1 and d/w < 6):
-  print("---------------------------------------------------------")
-  print("Tipo de ferramenta: Narrow tine (Estreita => 1 < d/w < 6)")
-  print("---------------------------------------------------------")
   dc = d
+  print("---------------------------------------------------------")
+  print("d/w = {:.3f}".format(d/w))
+  print("Tipo de ferramenta: Narrow tine (Estreita => 1 < d/w < 6)")
+  print("dc = d = {:.3f} m".format(dc))
+  print("---------------------------------------------------------")
 else:
-  print("----------------------------------------------------------------")
-  print("Tipo de ferramenta: Very narrow tine (Muito estreita => d/w > 6)")
-  print("----------------------------------------------------------------")
   dc = w + .6 * d
+  print("----------------------------------------------------------------")
+  print("d/w = {:.3f}".format(d/w))
+  print("Tipo de ferramenta: Very narrow tine (Muito estreita => d/w > 6)")
+  print("dc = w + 0.6 * d = {:.3f} m".format(dc))
+  print("----------------------------------------------------------------")
 
 # Segundo passo: Acha o valor de beta crítico
 alpha = float(input("Ângulo de ataque (alpha, em graus): "))
@@ -48,6 +54,7 @@ ngamma = (r/(2*d) * (1 + (2 * r)/(3 * b) * sin(rad(rho))))/(cos(rad(alpha + delt
 nq = ((r/d) * (1 + (r/b) * sin(rad(rho))))/(cos(rad(alpha + delta)) + sin(rad(alpha + delta)) * (tan(rad(beta + phi)))**(-1))
 nca = (1 - (tan(rad(alpha)))**(-1) * (tan(rad(beta + phi)))**(-1))/(cos(rad(alpha + delta)) + sin(rad(alpha + delta)) * (tan(rad(beta + phi)))**(-1))
 nc = (1 + tan(rad(beta))**(-1) * tan(rad(beta + phi))**(-1) * (1 + (r/b) * sin(rad(rho))))/(cos(rad(alpha + delta)) + sin(rad(alpha + delta)) * tan(rad(beta + phi))**(-1))
+na = (tan(rad(beta)) + (tan(rad(beta + phi)))**(-1))/(cos(rad(alpha + delta)) + sin(rad(alpha + delta)) * (tan(rad(beta + phi)))**(-1))
 
 print("-------------------------------------------------")
 print("ngamma = {:.2f}".format(ngamma))
@@ -62,6 +69,18 @@ ca = float(input("Valor de ca (em Pa): "))
 gamma = float(input("Peso específico (gamma, em N/m³): "))
 
 print("-------------------------------------------------")
-h = (gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + d * (m - (m - 1)/3)) * sin(rad(alpha + delta))
+v = float(input("Velocidade de operação (km/h): "))
+v /= 3.6
+print("-------------------------------------------------")
+
+vc = sqrt(5 * 9.81 * dc) # velocidade crítica 
+
+if v <= vc:
+  h = (gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) * sin(rad(alpha + delta))
+  print("v <= vc = {:.2f} km/h, logo v não influencia na força horizontal (H) requerida".format(vc * 3.6))
+else:
+  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**2 * na * d * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
+  print("v > vc = {:.2f} km/h, logo v influencia na força horizontal (H) requerida".format(vc * 3.6))
 
 print("H = {:.2f} N".format(h))
+print("-------------------------------------------------")
