@@ -80,7 +80,7 @@ if v <= vc:
   vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * d * nq) * (w + dc * (m - (m - 1)/3))) * cos(rad(alpha + delta))
   print("v <= vc = {:.2f} km/h, logo v não influencia na força horizontal (H) requerida".format(vc * 3.6))
 else:
-  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**2 * na * dc * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
+  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**(2) * na * dc * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
   vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**(2) * na * dc * (w + .6 * d)/9.81)) * cos(rad(alpha + delta))
   print("v > vc = {:.2f} km/h, logo v influencia na força horizontal (H) requerida".format(vc * 3.6))
 
