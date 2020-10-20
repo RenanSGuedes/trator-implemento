@@ -1,7 +1,7 @@
 from math import (cos, sin, tan, atan, pi, sqrt)
 from math import degrees as deg, radians as rad
 
-d = float(input("Profundide da ferramenta (m): "))
+d = float(input("Profundidade da ferramenta (m): "))
 w = float(input("Largura da ferramenta (m): "))
 
 # Primeiro passo: Tipo de ferramenta
@@ -77,10 +77,13 @@ vc = sqrt(5 * 9.81 * dc) # velocidade crítica
 
 if v <= vc:
   h = (gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) * sin(rad(alpha + delta))
+  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * d * nq) * (w + dc * (m - (m - 1)/3))) * cos(rad(alpha + delta))
   print("v <= vc = {:.2f} km/h, logo v não influencia na força horizontal (H) requerida".format(vc * 3.6))
 else:
-  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**2 * na * d * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
+  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**2 * na * dc * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
+  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**(2) * na * dc * (w + .6 * d)/9.81)) * cos(rad(alpha + delta))
   print("v > vc = {:.2f} km/h, logo v influencia na força horizontal (H) requerida".format(vc * 3.6))
 
 print("H = {:.2f} N".format(h))
+print("V = {:.2f} N".format(vn))
 print("-------------------------------------------------")
