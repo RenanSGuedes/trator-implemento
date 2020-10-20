@@ -77,7 +77,7 @@ vc = sqrt(5 * 9.81 * dc) # velocidade crítica
 
 if v <= vc:
   h = (gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) * sin(rad(alpha + delta))
-  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * d * nq) * (w + dc * (m - (m - 1)/3))) * cos(rad(alpha + delta))
+  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3))) * cos(rad(alpha + delta))
   print("v <= vc = {:.2f} km/h, logo v não influencia na força horizontal (H) requerida".format(vc * 3.6))
 else:
   h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**(2) * na * dc * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
@@ -87,3 +87,29 @@ else:
 print("H = {:.2f} N".format(h))
 print("V = {:.2f} N".format(vn))
 print("-------------------------------------------------")
+
+# Encontrar Htotal do implemento
+# di = dc - s/2
+print("---------------------------------------------------------------------")
+s = float(input("Espaçamento entre ferramentas (m): "))
+n = int(input("Número de ferramentas: "))
+print("---------------------------------------------------------------------")
+di = dc - s/2 # profundidade da ferramenta virtual
+
+if v <= vc:
+  hti = (gamma * di**(2) * ngamma + c * di * nc + q * di * nq) * (w + di * (m - (m - 1)/3)) * sin(rad(alpha + delta))
+  vti = -((gamma * di**(2) * ngamma + c * di * nc + q * di * nq) * (w + di * (m - (m - 1)/3))) * cos(rad(alpha + delta))
+  print("v <= vc = {:.2f} km/h, logo v não influencia na força horizontal (H) requerida".format(vc * 3.6))
+else:
+  hti = ((gamma * di**(2) * ngamma + c * di * nc + q * di * nq) * (w + di * (m - (m - 1)/3)) + (gamma * v**(2) * na * di * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
+  vti = -((gamma * di**(2) * ngamma + c * di * nc + q * di * nq) * (w + di * (m - (m - 1)/3)) + (gamma * v**(2) * na * di * (w + .6 * d)/9.81)) * cos(rad(alpha + delta))
+  print("v > vc = {:.2f} km/h, logo v influencia na força horizontal (H) requerida".format(vc * 3.6))
+
+ht = h * n - (n - 1) * hti
+print("---------------------------------------------------------------------")
+print("Profundidade da ferramenta virtual (di) = {:.2f} mm".format(di * 1000))
+print("Força horizontal da ferramenta virtual (Hti) = {:.2f} N".format(hti))
+print("Força vertical da ferramenta virtual (Vti) = {:.2f} N".format(vti))
+print("Ht = {:.2f} N".format(ht))
+print("---------------------------------------------------------------------")
+
