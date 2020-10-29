@@ -81,15 +81,15 @@ v = float(input("Velocidade de operação (km/h): "))
 v /= 3.6
 print("-------------------------------------------------")
 
-vc = sqrt(5 * 9.81 * d) # velocidade crítica 
+vc = sqrt(5 * 9.81 * dc) # velocidade crítica 
 
 if v <= vc:
-  h = (gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) * sin(rad(alpha + delta))
-  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3))) * cos(rad(alpha + delta))
+  h = (gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + d * (m - (m - 1)/3)) * sin(rad(alpha + delta))
+  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + d * (m - (m - 1)/3))) * cos(rad(alpha + delta))
   print("v <= vc = {:.2f} km/h, logo v não influencia na força horizontal (H) requerida".format(vc * 3.6))
 else:
-  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**(2) * na * dc * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
-  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + dc * (m - (m - 1)/3)) + (gamma * v**(2) * na * dc * (w + .6 * d)/9.81)) * cos(rad(alpha + delta))
+  h = ((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + d * (m - (m - 1)/3)) + (gamma * v**(2) * na * d * (w + .6 * d)/9.81)) * sin(rad(alpha + delta))
+  vn = -((gamma * dc**(2) * ngamma + c * dc * nc + q * dc * nq) * (w + d * (m - (m - 1)/3)) + (gamma * v**(2) * na * d * (w + .6 * d)/9.81)) * cos(rad(alpha + delta))
   print("v > vc = {:.2f} km/h, logo v influencia na força horizontal (H) requerida".format(vc * 3.6))
 
 print("H = {:.4f} N".format(h))
@@ -113,10 +113,10 @@ else:
 
 if s < 2 * d:
   htotal = h * n - (n - 1) * hti
-  print("Há interação entre as ferramentas.")
+  print("s < 2 * d, logo há interação entre as ferramentas.")
 else:
   htotal = h * n
-  print("Não há interação entre as ferramentas")
+  print("s >= 2 * d, logo não há interação entre as ferramentas")
 
 print("---------------------------------------------------------------------")
 print("Profundidade da ferramenta virtual (di) = {:.4f} mm".format(di * 1000))
